@@ -1,4 +1,14 @@
 import { pgTable, serial, text, timestamp, integer, boolean } from 'drizzle-orm/pg-core';
+import { drizzle } from 'drizzle-orm/node-postgres';
+import { Pool } from 'pg';
+
+// 创建数据库连接池
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
+
+// 创建数据库实例
+export const db = drizzle(pool);
 
 // 用户表
 export const users = pgTable('users', {
