@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
-import { db } from '@/lib/db/schema';
-import { keywords, asins } from '@/lib/db/schema';
-import { eq } from 'drizzle-orm';
+import { db } from '@/lib/db'; // Import db from index.ts
+import { keywords, asins } from '@/lib/db/schema'; // Import tables from schema.ts
+import { eq, and } from 'drizzle-orm';
+// ... rest of the file
 
 // 获取某ASIN下所有关键词
 export async function GET(request: Request) {

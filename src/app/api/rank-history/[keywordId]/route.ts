@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
-import { db } from '@/lib/db/schema';
-import { rankHistory } from '@/lib/db/schema';
+import { db } from '@/lib/db'; // Import db from index.ts
+import { rankHistory } from '@/lib/db/schema'; // Import table from schema.ts
 import { eq } from 'drizzle-orm';
+// ... rest of the file
 
 export async function GET(
   request: Request,
