@@ -10,23 +10,24 @@ export async function GET(request: Request) {
   const asin = searchParams.get('asin');
   
   if (!asin) {
-    return NextResponse.json({ error: '缺少ASIN参数' }, { status: 400 });
+    return NextResponse.json({ error: 'Missing ASIN parameter' }, { status: 400 });
   }
 
   try {
     const asinRecord = await db.select().from(asins).where(eq(asins.asin, asin)).limit(1);
     if (!asinRecord.length) {
-      return NextResponse.json([]);
+      return NextResponse.json({ error: 'ASIN not found' }, { status: 404 });
     }
 
     const keywordsList = await db
       .select()
       .from(keywords)
-      .where(eq(keywords.asinId, asinRecord[0].id));
+      .where(eq(keywords.asin, asinRecord[0].asin));
     
     return NextResponse.json(keywordsList);
   } catch (error) {
-    return NextResponse.json({ error: '获取关键词列表失败' }, { status: 500 });
+    console.error('Error fetching keywords:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
 
@@ -41,7 +42,7 @@ export async function POST(request: Request) {
     }
 
     const result = await db.insert(keywords).values({
-      asinId: asinRecord[0].id,
+      asin: asinRecord[0].asin,
       keyword,
     }).returning();
 
