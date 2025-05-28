@@ -1,6 +1,7 @@
 import { db } from './db/schema';
 import { keywords, rankHistory } from './db/schema';
 import { sendEmail } from './email';
+import { eq } from 'drizzle-orm';
 
 // 模拟获取关键词排名的函数
 async function getKeywordRank(keyword: string, asin: string): Promise<number> {
@@ -14,7 +15,7 @@ export async function checkKeywordRanks() {
     const allKeywords = await db.select().from(keywords);
     
     for (const keyword of allKeywords) {
-      const rank = await getKeywordRank(keyword.keyword, keyword.asinId.toString());
+      const rank = await getKeywordRank(keyword.keyword, keyword.asin.toString());
       
       // 记录排名
       await db.insert(rankHistory).values({
