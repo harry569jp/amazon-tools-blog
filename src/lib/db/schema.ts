@@ -37,4 +37,13 @@ export const rankHistory = pgTable('rank_history', {
   keywordId: integer('keyword_id').references(() => keywords.id),
   rank: integer('rank').notNull(),
   date: timestamp('date').defaultNow(),
+});
+
+// 添加ASIN表定义
+export const asins = pgTable('asins', {
+  id: serial('id').primaryKey(),
+  asin: text('asin').notNull().unique(), // ASIN字段，非空且唯一
+  note: text('note'), // 备注字段，可选
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
 }); 
